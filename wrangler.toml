@@ -7,5 +7,5 @@ route = ""
 zone_id = ""
 compatibility_date = "2021-12-10"
 kv_namespaces = [ 
-	 { binding = "INTERVIEW_KV", id = "fd4b76cada594516935c8092cf34227d" }
+	 { binding = "INTERVIEW_KV", preview_id = "fd4b76cada594516935c8092cf34227d", id= "fd4b76cada594516935c8092cf34227d" }
 ]
