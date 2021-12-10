@@ -1,8 +1,11 @@
 name = "my-worker"
 type = "javascript"
 
-account_id = ""
+account_id = "f45876fbcaf4581a59ebf9ddb5549818"
 workers_dev = true
 route = ""
 zone_id = ""
 compatibility_date = "2021-12-10"
+kv_namespaces = [ 
+	 { binding = "INTERVIEW_KV", id = "fd4b76cada594516935c8092cf34227d" }
+]
