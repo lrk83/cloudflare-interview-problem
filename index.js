@@ -1,16 +1,7 @@
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
-  "Access-Control-Max-Age": "86400",
-}
-
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
-/**
- * Respond with hello worker text
- * @param {Request} request
- */
+
 async function handleRequest(request) {
 
   if (request.method === 'POST'){
@@ -33,9 +24,25 @@ async function handleRequest(request) {
     catch(err) {
       return new Response(err)
     }
-
-    
   }
 
+  if (request.method === 'GET'){
+    
+    try {
+      let data = await INTERVIEW_KV.list();
+
+      var pairs = [];
+      for (let x=0;x<data.keys.length;x++){
+        let value = await INTERVIEW_KV.get(data.keys[x].name)
+        pairs.push(value)
+      }
+      console.log(pairs);
+      return new Response(pairs);
+    }
+    catch (err){
+      return new Response(err)
+    }
+    
+  }
  
 }
