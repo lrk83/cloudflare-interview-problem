@@ -5,16 +5,33 @@ addEventListener('fetch', event => {
 async function handleRequest(request) {
 
   //Note - a router (maybe itty router) would be more efficient here
-
   if (request.url.includes("/api/posts")) {
     if (request.url.includes("/byId")){
+      if(request.url.includes("/newComment") || request.url.includes("/upvote")){
+
+        let body=await request.json();
+        var id = body.key;
+
+        try{
+          let value = await INTERVIEW_KV.put(id,JSON.stringify(body))
+  
+          return new Response(JSON.stringify("success"), {
+            headers:{
+              'Access-Control-Allow-Origin': '*',
+              'Content-type': 'application/json'
+            }
+          })
+        }
+        catch (err){
+          return new Response("no post found with this id", {status:404})
+        }
+
+      }else{
 
       let id = request.url.split("/byId/")[1]
 
       try{
         let value = await INTERVIEW_KV.get(id)
-
-        console.log(value);
 
         let jsonvalue = JSON.parse(value)
 
@@ -29,13 +46,12 @@ async function handleRequest(request) {
         return new Response("no post found with this id", {status:404})
       }
 
-    }
+    }}
     else{
 
       if (request.method === 'POST'){
 
         let body = await request.json();
-
         let title = body.title;
         let username = body.username;
         let content = body.content;
@@ -52,7 +68,9 @@ async function handleRequest(request) {
             content: body.content,
             url: body.url,
             hasImage: body.hasImage,
-            key: key
+            key: key,
+            comments: [],
+            upvotes: 0
           }
           let result = await INTERVIEW_KV.put(key,JSON.stringify(body))
           return new Response(JSON.stringify("success"),{
